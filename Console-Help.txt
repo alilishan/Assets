@@ -1,0 +1,140 @@
+Math.floor(50*Math.random())+""+(new Date).getTime();
+
+
+_setbg.loadLg({ url: '/assets/backgrounds/macy-background.jpg' });
+_setbg.set('/assets/backgrounds/macy-background.jpg');
+_setTheme({ id: 'theme-cl-1', custom_class:'theme-macy-red-white'});
+
+
+http://kickass.to/adobe-photoshop-cs6-13-0-extended-final-multilanguage-patch-painter-chingliu-t6333790.html
+
+
+
+	//UPLOAD FUNCTION -> JUST PASS THE PARAMETERS -> Needs MProgress
+	var _upload = function(file, progress, url, callback){
+		if(file){
+			var bufferProgress = new Mprogress({
+				template: 2,
+				parent: progress,
+				start: true
+			});
+			var formData =  new FormData();
+				formData.append('file', file);
+
+			var xhr = new XMLHttpRequest();
+			var upload = xhr.upload;
+			upload.addEventListener("progress", function(event){
+				  if (event.lengthComputable) {
+					var complete = (event.loaded / event.total * 100 | 0);
+					if(complete > 50){
+						bufferProgress.set(complete/100);
+					}
+				  }
+			}, false);
+
+			xhr.open('POST', url, true );
+			xhr.setRequestHeader('X-Filename', file.name);
+			xhr.onreadystatechange = function(){
+				if(typeof(callback) == 'function'){
+					if (xhr.readyState == 4 && xhr.status == 200){
+						var jsonObj = $.parseJSON(xhr.responseText);
+						callback(xhr.readyState, jsonObj);
+					} 
+				}
+
+				setTimeout(function() {
+					bufferProgress.end();
+				}, 1000);
+			}
+			xhr.send(formData);	
+		}
+	}
+
+
+
+
+
+//Function aGeneric Upload
+function FileManagerDoUpload(url, file, id, progress, callback){
+	var formData =  new FormData();
+		formData.append('file', file);
+
+	var xhr = new XMLHttpRequest();
+	var upload = xhr.upload;
+	upload.addEventListener("progress", function(event){
+		  if (event.lengthComputable) {
+			var complete = (event.loaded / event.total * 100 | 0);
+			if(typeof progress == 'function'){
+				progress(id, complete);
+			}
+		  }
+	}, false);
+
+	xhr.open('POST', url, true );
+	xhr.setRequestHeader('X-Filename', file.name);
+
+	xhr.onerror = function(){
+		if(typeof(callback) == 'function'){
+			var jsonObj = {"status": "false", "message": "Ajax Upload Error [XHR on Error]"};
+			callback(id, jsonObj);
+		}
+	}
+
+	xhr.onreadystatechange = function(){
+		if (xhr.readyState == 4 && xhr.status == 200){
+			if(typeof(callback) == 'function'){
+				var jsonObj = $.parseJSON(xhr.responseText);
+				callback(id, jsonObj);
+			}
+		}
+	}
+	xhr.send(formData);		
+}
+
+
+
+
+
+Anguler Upload Factory
+
+/*Uploader Factory*/
+ounchKioskPro.factory('Uploader', function($q, $rootScope) {
+	this.upload = function(url, file) {
+		var deferred = $q.defer(),
+			formdata = new FormData(),
+			xhr = new XMLHttpRequest(),
+			upload = xhr.upload;
+			
+			upload.addEventListener("progress", function(event){
+				if (event.lengthComputable) {
+					var complete = (event.loaded / event.total * 100 | 0);
+					deferred.notify(complete); 
+				}
+			}, false);
+
+			formdata.append('file', file);
+
+			xhr.onreadystatechange = function(r) {
+				if (4 === this.readyState) {
+					if (xhr.status == 200) {
+						$rootScope.$apply(function() {
+							deferred.resolve(xhr);  
+						});
+					} else {
+						$rootScope.$apply(function() {
+							deferred.reject(xhr);  
+						});
+					}
+				}
+			}
+		xhr.open("POST", url, true);
+		xhr.send(formdata);
+		return deferred.promise;
+	};
+	return this;
+});
+
+
+
+
+data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAsCAMAAAApWqozAAAAGFBMVEUiIiI9PT0eHh4gIB4hIBkcHBwcHBwcHBydr+JQAAAACHRSTlMABA4YHyQsM5jtaMwAAADfSURBVDjL7ZVBEgMhCAQBAf//42xcNbpAqakcM0ftUmFAAIBE81IqBJdS3lS6zs3bIpB9WED3YYXFPmHRfT8sgyrCP1x8uEUxLMzNWElFOYCV6mHWWwMzdPEKHlhLw7NWJqkHc4uIZphavDzA2JPzUDsBZziNae2S6owH8xPmX8G7zzgKEOPUoYHvGz1TBCxMkd3kwNVbU0gKHkx+iZILf77IofhrY1nYFnB/lQPb79drWOyJVa/DAvg9B/rLB4cC+Nqgdz/TvBbBnr6GBReqn/nRmDgaQEej7WhonozjF+Y2I/fZou/qAAAAAElFTkSuQmCC
